@@ -12,6 +12,7 @@ int main()
 	int opcao = 0;
 
 	std::string aux1, aux2;
+	bool achouDFS = false;
 
 	std::cout << "Digite o numero de paises: ";
 	std::cin >> edges;
@@ -21,11 +22,24 @@ int main()
 
 	std::unordered_map<std::string, int> numPaises;
 
-	//Guarda os nodos percorridos
-	std::vector<int> ids;
+	//Guarda os pais dos nodos
+	std::vector<bool> visitado(edges, false);
+
+	//Guarda menor caminho
+	std::vector<int> menorCaminho;
+
+	//Guarda menor caminho
+	std::vector<int> agm(edges);
+
+	//auxiliar para guardar o resultado das funcoes
+	int resultado = -1;
 
 	//Fazer leitura das conexões em um .txt
 	numPaises = carregarGrafo("grafos.txt", adj);
+
+	//verifica se o grafo eh conexo
+	bool conexo = ehConexo(edges, adj);
+
 
 	do
 	{
@@ -45,7 +59,6 @@ int main()
 		std::cout << "Escolha: ";
 		std::cin >> opcao;
 
-		
 		switch (opcao)
 		{
 
@@ -53,7 +66,7 @@ int main()
 
 			//Para opcao == 1
 			std::cout << "\n======= Manipulacao de Mapas =======\n";
-			std::cout << "======= Distancia =======\n\n";
+			std::cout << "======= Distancia por caminhamentos =======\n\n";
 
 			std::cout << "1. BFS\n";
 			std::cout << "2. DFS\n";
@@ -68,7 +81,7 @@ int main()
 
 			if (opcao == 1)
 			{
-				int resultado = bfsMenor(numPaises[aux1], numPaises[aux2], adj, ids);
+				resultado = bfsMenor(numPaises[aux1], numPaises[aux2], adj);
 
 				if (resultado != -1)
 					std::cout << "\nDistancia total: " << resultado << "\n";
@@ -78,7 +91,7 @@ int main()
 			}
 			else if (opcao == 2)
 			{
-				int resultado = dfsMenor(numPaises[aux1], numPaises[aux2], adj, ids);
+				resultado = dfsMenor(numPaises[aux1], numPaises[aux2], adj, visitado);
 
 				if (resultado != -1)
 					std::cout << "Distancia total: " << resultado << "\n";
@@ -92,11 +105,40 @@ int main()
 			break;
 
 		case 2:
-			// Para opcao == 2
+
+			std::cout << "\n======= Manipulacao de Mapas =======\n";
+			std::cout << "======= Menor distâncias =======\n\n";
+
+			std::cout << "Pais de partida: ";
+			std::cin >> aux1;
+
+			menorCaminho = dijkstra(numPaises[aux1], adj);
+			
+			for (int i = 0; i < edges; i++)
+			{
+				if (menorCaminho[i] != INT_MAX)
+					std::cout << "\n " << i << ": " << menorCaminho[i];
+				else
+					std::cout << "\n " << i << ": " << "nao acessivel";
+			}
+
 			break;
 
 		case 3:
-			// Para opcao == 3
+			std::cout << "\n======= Manipulacao de Mapas =======\n";
+			std::cout << "===== Arvore Geradora Minima =====\n\n";
+
+			if (conexo)
+			{
+				resultado = prim(adj, agm);
+
+				std::cout << "\nValor da agm: " << resultado << "\n\n";
+
+				printAGM(agm);
+			}
+			else
+				std::cout << "\nGrafo nao conexo\n";
+			
 			break;
 
 		case 4: 
