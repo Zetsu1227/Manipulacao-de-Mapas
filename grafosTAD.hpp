@@ -4,7 +4,6 @@
 #include <vector>
 #include <queue>
 #include <unordered_map>
-#include <stack>
 
 //verifica se o grafo eh conexo
 bool ehConexo(int edges, const std::vector<std::vector<std::pair<int, int>>>& adj);
@@ -27,7 +26,11 @@ int prim(const std::vector<std::vector<std::pair<int, int>>>& adj, std::vector<i
 int chaveMin(std::vector<int>& chave, std::vector<bool>& visited);
 
 //funcao principal que imprime a arvore geradora minima
-void printAGM(const std::vector<int>& agm);
+void printAGM(const std::vector<int>& agm, std::unordered_map<int, std::string>& nomePaises);
 
 //funcao recursiva auxiliar da printAGM para percorrer a arvore
-void auxPrint(int origem, const std::unordered_multimap<int, int>& mapa, int espacamento);
+void auxPrint(int origem, const std::unordered_multimap<int, int>& mapa, int espacamento, std::unordered_map<int, std::string>& nomePaises);
+
+
+
+

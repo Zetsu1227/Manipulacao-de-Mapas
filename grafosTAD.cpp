@@ -220,7 +220,7 @@ int chaveMin(std::vector<int>& chave, std::vector<bool>& visited)
     return minIndex;
 }
 
-void printAGM(const std::vector<int>& agm)
+void printAGM(const std::vector<int>& agm, std::unordered_map<int, std::string>& nomePaises)
 {
     int tam = agm.size();
 
@@ -241,24 +241,23 @@ void printAGM(const std::vector<int>& agm)
         }
     }
 
-    auxPrint(raiz, mapa, 1);
-
+    auxPrint(raiz, mapa, 1, nomePaises);
 
     
 }
 
-void auxPrint(int origem, const std::unordered_multimap<int, int>& mapa, int espacamento)
+void auxPrint(int origem, const std::unordered_multimap<int, int>& mapa, int espacamento, std::unordered_map<int, std::string>& nomePaises)
 {
     
     for (int i = 0; i < espacamento; i++)
         std::cout << "=";
 
-    std::cout << " " << origem << "\n";
+    std::cout << " " << nomePaises[origem] << "\n";
 
     auto range = mapa.equal_range(origem);
 
     //it->second eh o filho da origem
     for (auto it = range.first; it != range.second; ++it)
-        auxPrint(it->second, mapa, espacamento + 1);
+        auxPrint(it->second, mapa, espacamento + 1, nomePaises);
 
 }
